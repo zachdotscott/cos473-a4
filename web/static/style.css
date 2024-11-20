@@ -1,0 +1,35 @@
+body {
+    font-family: monospace, monospace;
+    font-size: 13px;
+}
+
+button {
+    font-size: 10px;
+    border: 0;
+}
+
+button#download-projections {
+    height: 35px;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.vertical-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+#display-pane {
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 2px dotted blue
+}
+
+#homography-pane {
+    border: 2px dotted red;
+}

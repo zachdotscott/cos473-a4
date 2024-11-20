@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homography Image Projector</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+    <script src="{{ url_for('static',filename='script.js') }}"> </script>
+</head>
+
+<body>
+    <h1>Homography Projection Tool</h1>
+    <p>
+        (1) Select an available image. If an image already has a perspective correction saved, it will display.<br>
+        &nbsp;&nbsp;&nbsp; Corrected images have a ☑️ checkmark next to them in the file select. <br><br>
+        (2) Select 4 handles on the image by clicking the corners of the pipe frame. Once 4 handles are present, clicking again will reset the handles and place a new one. <br>
+        &nbsp;&nbsp;&nbsp; <b>The order of handle selection determines the orientation of the resulting image. Start on the top-left and proceed clockwise. <br> 
+        &nbsp;&nbsp;&nbsp; Selecting the handles in a non-clockwise fashion will result in unpredictable results.</b> <br>
+        &nbsp;&nbsp;&nbsp; <em>The shape of the handles indicate which corner of the output image that the pixels at the handle will be projected to. <br>
+        &nbsp;&nbsp;&nbsp; Starting on a different corner and proceeding clockwise will result in a rotated image (which could be desirable!).</em><br><br>
+        (3) Click the "Submit!" button to see the results of the perspective correction. <em>This may take a moment.</em> <br>
+        &nbsp;&nbsp;&nbsp; Note that the result will appear both on the webpage, and in the "homographies" folder of the image directory. <br><br>
+        (4) If an adjusted image is present, you may download in full quality with the "Download HQ" button.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; You can also download every projection created for a particular folder using the button below the folder select. This can take a minute for a large number of files. <br><br>
+        <em>This tool is best experienced on a widescreen monitor.</em> 
+    </p>
+    <hr>
+    <div class="container">
+        <div class="vertical-container">
+            <p>Folder Select</p>
+            <select id='folder-select' name="Select an folder" size="10" onChange="setFileList()">
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="download-projections" onclick="downloadFolder()">Download all projections<br>for this folder</button>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="vertical-container">
+            <p>File Select</p>
+            <select id='file-select' name="Select an photo" size="10" onChange="setPhoto()">
+            </select>
+        </div>        
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <canvas id='display-pane' onclick="addPoint(event)"></canvas>
+        &nbsp;&nbsp;
+        <div class="vertical-container">
+            <button id='submit' onclick="submit()">Submit!</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id='reset' onclick="resetPoints()">Reset Handles</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="download" style="display: none;" onclick="download()">Download HQ</button>
+        </div>
+        &nbsp;&nbsp;
+        <image id='homography-pane' src="/display/noimage.png"></image>
+        &nbsp;&nbsp;
+    </div>
+</body>
+
+</html>
