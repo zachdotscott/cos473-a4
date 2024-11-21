@@ -144,7 +144,7 @@ function setFolderList() {
             if (!foldersLoaded) {
                 foldersLoaded = true;
                 selector.selectedIndex = 0;
-                setFileList(0);
+                setFileList();
             }
         })
         .catch((error) => {
