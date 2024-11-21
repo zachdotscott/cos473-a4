@@ -6,6 +6,7 @@ body {
 button {
     font-size: 10px;
     border: 0;
+    height: 25px;
 }
 
 button#download-projections {
