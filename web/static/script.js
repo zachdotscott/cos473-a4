@@ -60,8 +60,10 @@ function resetPoints() {
 
 // submit a picture for projectionm
 function submit() {
-    folder = document.getElementById('folder-select').value
-    file = document.getElementById('file-select').value
+    folder = document.getElementById('folder-select').value;
+    fileSelect = document.getElementById('file-select');
+    file = fileSelect.value;
+    index = fileSelect.selectedIndex;
 
     // we had to scale down the canvas to make it reasonably fit on a screen
     // now we scale the points back up...
@@ -91,7 +93,7 @@ function submit() {
 
             const download_button = document.getElementById('download');
             download_button.style.display = 'block';
-            setFileList()
+            setFileList(index);
         })
         .catch((error) => {
             console.error(error)
@@ -104,17 +106,7 @@ function submit() {
 function download() {
     folder = document.getElementById('folder-select').value
     file = document.getElementById('file-select').value
-    fetch('/download', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({folder: folder, file: file}),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            window.open(data.image_url, '_blank').focus()
-        })
+    window.open(`/download/${folder}/${file}`)
 }
 
 
@@ -152,7 +144,7 @@ function setFolderList() {
             if (!foldersLoaded) {
                 foldersLoaded = true;
                 selector.selectedIndex = 0;
-                setFileList();
+                setFileList(0);
             }
         })
         .catch((error) => {
@@ -162,8 +154,8 @@ function setFolderList() {
 
 
 // send the list of a files in a provided folder to the frontend
-function setFileList() {
-    const folder = document.getElementById('folder-select').value
+function setFileList(index=-1) {
+    const folder = document.getElementById('folder-select').value;
 
     fetch('/get-photos', {
         method: 'POST',
@@ -182,6 +174,7 @@ function setFileList() {
             for (i in items) {
                 selector.options.add(new Option(items[i]['text'], items[i]['value']))
             }
+            selector.selectedIndex = index;
         })
         .catch((error) => {
             alert("Unable to find folder for " + folder);

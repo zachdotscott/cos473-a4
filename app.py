@@ -134,20 +134,17 @@ def submit():
     return j
 
 
-@app.route('/download', methods=['POST'])
-def download():
+@app.route('/download/<folder>/<file>')
+def download(folder, file):
     """
     Get's link for the selected file's projection.
     """
-    data = request.json
-    folder, file = data.values()
     ori = display_dir / folder / file
     projected_image = display_dir / folder / "projections" / f"{ori.stem}_H{ori.suffix}"
     if not projected_image.exists():
         return f"Could not find project for image {file} in folder {folder}.", 400
     
-    j = jsonify({'image_url': f"/display/{folder}/projections/{ori.stem}_H{ori.suffix}"}), 200
-    return j
+    return send_from_directory(projected_image.parent, projected_image.name)
 
 
 @app.route('/download-folder/<folder>')
